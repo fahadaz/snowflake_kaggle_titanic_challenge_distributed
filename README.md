@@ -71,6 +71,50 @@ ALTER GIT REPOSITORY TITANIC_CHALLENGE_DISTRIBUTED_REPO FETCH;
 -- Run the Setup Script from Github
 -- You should see three tables (PASSENGER, PASSENGER_FEATURES, PASSENGER_KAGGLE_FEATURES$V1)
 EXECUTE IMMEDIATE FROM @KAGGLE_TITANIC_CHALLENGE.PUBLIC.TITANIC_CHALLENGE_DISTRIBUTED_REPO/branches/main/_internal/setup.sql;
+
+-- Grant DB Access to sysadmin role
+grant usage on database kaggle_titanic_challenge to sysadmin;
+grant all on schema kaggle_titanic_challenge.d_sch to sysadmin;
+grant all on schema kaggle_titanic_challenge.development to sysadmin;
+grant all on schema kaggle_titanic_challenge.development to sysadmin;
+grant all on all tables in database kaggle_titanic_challenge to role sysadmin;
+grant all on all dynamic tables in database kaggle_titanic_challenge to role sysadmin;
+grant all on all stages in database kaggle_titanic_challenge to role sysadmin;
+grant all on all functions in database kaggle_titanic_challenge to role sysadmin;
+grant all on all procedures in database kaggle_titanic_challenge to role sysadmin;
+grant all on all models in database kaggle_titanic_challenge to role sysadmin;
+grant all on all git repositories in database kaggle_titanic_challenge to role sysadmin;
+
+-- grant usage on warehouse to sysadmin 
+grant usage on warehouse COMPUTE_WH to role sysadmin;
+grant usage on warehouse TRAIN_WH to role sysadmin;
+
+-- Create Notebook compute pool with GPU
+CREATE COMPUTE POOL GPU_NV_S
+  MIN_NODES = 1
+  MAX_NODES = 5
+  INSTANCE_FAMILY = CPU_X64_M;
+
+-- create a serving compute pool
+CREATE COMPUTE POOL IF NOT EXISTS model_compute_pool
+    MIN_NODES = 2
+    MAX_NODES = 4
+    INSTANCE_FAMILY = 'CPU_X64_M'
+    AUTO_RESUME = TRUE;
+
+-- create image repo for model serving
+CREATE IMAGE REPOSITORY IF NOT EXISTS inference_images;
+
+-- grant permission to sysadmin
+GRANT READ ON IMAGE REPOSITORY inference_images TO ROLE sysadmin;
+GRANT WRITE ON IMAGE REPOSITORY inference_images TO ROLE sysadmin;
+GRANT SERVICE WRITE ON IMAGE REPOSITORY inference_images TO ROLE sysadmin;
+GRANT SERVICE READ ON IMAGE REPOSITORY inference_images TO ROLE sysadmin;
+grant all on compute pool model_compute_pool to role sysadmin;
+grant all on compute pool GPU_NV_S to role sysadmin;
+
+GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE sysadmin;
+
 ```
 
 Explore the Example Notebook by creating a new Notebook from the integrated Github Repository using the `challenge_demo.iypnb`:  
