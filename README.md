@@ -34,7 +34,7 @@ For each passenger where the survival status is unknown, you must predict a 0 (d
 Your score is the percentage of passengers you correctly predict. This is known as accuracy.
 
 ## Get Started
-Register for a free Snowflake Trial Account:
+Register for a free Snowflake Trial Account: (SPCS related Notebook cells do not work in Trial Accounts)
 - [Free Snowflake Trial Account](https://signup.snowflake.com/)
 
 > [!IMPORTANT]
