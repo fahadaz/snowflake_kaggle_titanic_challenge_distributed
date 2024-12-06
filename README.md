@@ -3,6 +3,9 @@ Source:
 https://www.kaggle.com/competitions/titanic
 
 ## The Challenge
+*(This repo is a fork from Michael Gorkow repo https://github.com/michaelgorkow/snowflake_kaggle_titanic_challenge to run the demo Notebook and model registry on [Snowflake Container Runtime](https://www.snowflake.com/engineering-blog/machine-learning-container-runtime/)
+)*
+
 The sinking of the Titanic is one of the most infamous shipwrecks in history.
 
 On April 15, 1912, during her maiden voyage, the widely considered “unsinkable” RMS Titanic sank after colliding with an iceberg. Unfortunately, there weren’t enough lifeboats for everyone onboard, resulting in the death of 1502 out of 2224 passengers and crew.
