@@ -53,24 +53,24 @@ CREATE OR REPLACE DATABASE KAGGLE_TITANIC_CHALLENGE;
 USE SCHEMA KAGGLE_TITANIC_CHALLENGE.PUBLIC;
 
 -- Create the integration with Github
-CREATE OR REPLACE API INTEGRATION GITHUB_INTEGRATION_MICHAEL
+CREATE OR REPLACE API INTEGRATION GITHUB_INTEGRATION_FAHAD
     api_provider = git_https_api
-    api_allowed_prefixes = ('https://github.com/michaelgorkow/')
+    api_allowed_prefixes = ('https://github.com/fahadaz/')
     enabled = true
-    comment='Michaels repository containing all the awesome code.';
+    comment='Fahads repository fork of Michaels repository containing all the awesome code.';
 
 -- Create the integration with the Github repository
-CREATE GIT REPOSITORY TITANIC_CHALLENGE_REPO 
-	ORIGIN = 'https://github.com/michaelgorkow/snowflake_kaggle_titanic_challenge' 
-	API_INTEGRATION = 'GITHUB_INTEGRATION_MICHAEL' 
-	COMMENT = 'Michaels repository containing all the awesome code.';
+CREATE GIT REPOSITORY TITANIC_CHALLENGE_DISTRIBUTED_REPO 
+	ORIGIN = 'https://github.com/fahadaz/snowflake_kaggle_titanic_challenge_distributed' 
+	API_INTEGRATION = 'GITHUB_INTEGRATION_FAHAD' 
+	COMMENT = 'Fahads repository fork of Michaels repository containing all the awesome code.';
 
 -- Fetch most recent files from Github repository
-ALTER GIT REPOSITORY TITANIC_CHALLENGE_REPO FETCH;
+ALTER GIT REPOSITORY TITANIC_CHALLENGE_DISTRIBUTED_REPO FETCH;
 
 -- Run the Setup Script from Github
 -- You should see three tables (PASSENGER, PASSENGER_FEATURES, PASSENGER_KAGGLE_FEATURES$V1)
-EXECUTE IMMEDIATE FROM @KAGGLE_TITANIC_CHALLENGE.PUBLIC.TITANIC_CHALLENGE_REPO/branches/main/_internal/setup.sql;
+EXECUTE IMMEDIATE FROM @KAGGLE_TITANIC_CHALLENGE.PUBLIC.TITANIC_CHALLENGE_DISTRIBUTED_REPO/branches/main/_internal/setup.sql;
 ```
 
 Explore the Example Notebook by creating a new Notebook from the integrated Github Repository using the `challenge_demo.iypnb`:  
