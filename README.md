@@ -53,6 +53,11 @@ CREATE WAREHOUSE IF NOT EXISTS COMPUTE_WH WITH WAREHOUSE_SIZE='X-SMALL';
 
 -- Create a fresh Database
 CREATE OR REPLACE DATABASE KAGGLE_TITANIC_CHALLENGE;
+
+-- Create schema
+CREATE OR REPLACE SCHEMA D_SCH;
+
+-- Use Public Schema
 USE SCHEMA KAGGLE_TITANIC_CHALLENGE.PUBLIC;
 
 -- Create the integration with Github
@@ -98,6 +103,9 @@ CREATE COMPUTE POOL GPU_NV_S
   MAX_NODES = 5
   INSTANCE_FAMILY = CPU_X64_M;
 
+-- Create Notebook
+create NOTEBOOK IDENTIFIER('"KAGGLE_TITANIC_CHALLENGE"."D_SCH"."CHALLENGE_DEMO_DISTRIBUTED"') FROM '@"KAGGLE_TITANIC_CHALLENGE"."D_SCH"."DISTRIBUTED_TITANIC_CHALLENGE"/branches/"main"/' QUERY_WAREHOUSE = 'QUICKSTART_WH' RUNTIME_NAME = 'SYSTEM$GPU_RUNTIME' COMPUTE_POOL = 'GPU_XS_5_NODES' MAIN_FILE = 'challenge_demo.ipynb'
+
 -- create a serving compute pool
 CREATE COMPUTE POOL IF NOT EXISTS model_compute_pool
     MIN_NODES = 2
@@ -117,6 +125,8 @@ grant all on compute pool model_compute_pool to role sysadmin;
 grant all on compute pool GPU_NV_S to role sysadmin;
 
 GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE sysadmin;
+
+
 
 ```
 
